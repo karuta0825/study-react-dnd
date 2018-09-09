@@ -1,5 +1,7 @@
 // @flow
 import * as React from 'react';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import Square from './Square';
 import Knight from './Knight';
 import { canMoveKnight, moveKnight } from './Game';
@@ -8,6 +10,7 @@ type PropsType = {
   knightPosition: Array<number>,
 };
 
+@DragDropContext(HTML5Backend)
 export default class Board extends React.Component<PropsType> {
   handleSquareClick(toX: number, toY: number) {
     if (canMoveKnight(toX, toY)) {
