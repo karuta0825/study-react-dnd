@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Square from './Square';
 import Knight from './Knight';
-import { moveKnight } from './Game';
+import { canMoveKnight, moveKnight } from './Game';
 
 type PropsType = {
   knightPosition: Array<number>,
@@ -10,7 +10,9 @@ type PropsType = {
 
 export default class Board extends React.Component<PropsType> {
   handleSquareClick(toX: number, toY: number) {
-    moveKnight(toX, toY);
+    if (canMoveKnight(toX, toY)) {
+      moveKnight(toX, toY);
+    }
   }
 
   renderSquare(i: number): React.Node {
