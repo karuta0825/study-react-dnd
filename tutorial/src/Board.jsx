@@ -2,12 +2,17 @@
 import * as React from 'react';
 import Square from './Square';
 import Knight from './Knight';
+import { moveKnight } from './Game';
 
 type PropsType = {
   knightPosition: Array<number>,
 };
 
 export default class Board extends React.Component<PropsType> {
+  handleSquareClick(toX: number, toY: number) {
+    moveKnight(toX, toY);
+  }
+
   renderSquare(i: number): React.Node {
     const { knightPosition } = this.props;
     const x = i % 8;
@@ -21,6 +26,8 @@ export default class Board extends React.Component<PropsType> {
       <div
         key={i}
         style={{ width: '12.5%', height: '12.5%' }}
+        role="presentation"
+        onClick={() => this.handleSquareClick(x, y)}
       >
         <Square black={black}>
           {piece}
