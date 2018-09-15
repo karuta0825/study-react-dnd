@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { DropTarget } from 'react-dnd';
 import Square from './Square';
-import { moveKnight, canMoveKnight } from './Game';
+import {
+  moveKnight,
+  canMoveKnight,
+  moveQueen,
+  canMoveQueen,
+} from './Game';
 import { ItemTypes } from './Constants';
 
 type PropsType = {
@@ -14,11 +19,23 @@ type PropsType = {
 };
 
 const squareTarget = {
-  drop(props) {
-    moveKnight(props.x, props.y);
+  drop(props, monitor) {
+    const { name } = monitor.getItem();
+    if (name === 'knight') {
+      moveKnight(props.x, props.y);
+    } else if (name === 'queen') {
+      moveQueen(props.x, props.y);
+    }
   },
-  canDrop(props): boolean {
-    return canMoveKnight(props.x, props.y);
+  canDrop(props, monitor): boolean {
+    const { name } = monitor.getItem();
+    if (name === 'knight') {
+      return canMoveKnight(props.x, props.y);
+    }
+    if (name === 'queen') {
+      return canMoveQueen(props.x, props.y);
+    }
+    return true;
   },
 };
 
@@ -63,7 +80,6 @@ export default class BoardSquare extends Component<PropsType> {
       canDrop,
     } = this.props;
     const black = (x + y) % 2 === 1;
-
     return connectDropTarget(
       <div
         style={{

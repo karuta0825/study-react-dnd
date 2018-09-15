@@ -4,20 +4,16 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import BoardSquare from './BoardSquare';
 import Knight from './Knight';
-import { canMoveKnight, moveKnight } from './Game';
+import Queen from './Queen';
+import { hot } from 'react-hot-loader';
 
 type PropsType = {
   knightPosition: Array<number>,
+  queenPosition: Array<number>,
 };
 
 @DragDropContext(HTML5Backend)
-export default class Board extends React.Component<PropsType> {
-  handleSquareClick(toX: number, toY: number) {
-    if (canMoveKnight(toX, toY)) {
-      moveKnight(toX, toY);
-    }
-  }
-
+class Board extends React.Component<PropsType> {
   renderSquare(i: number): React.Node {
     const x = i % 8;
     const y = Math.floor(i / 8);
@@ -37,11 +33,18 @@ export default class Board extends React.Component<PropsType> {
   }
 
   renderPiece(x: number, y: number): ?React.Node {
-    const { knightPosition } = this.props;
+    const { knightPosition, queenPosition } = this.props;
     const [knightX, knightY] = knightPosition;
+    const [queenX, queenY] = queenPosition;
+
     if (x === knightX && y === knightY) {
       return <Knight />;
     }
+
+    if (x === queenX && y === queenY) {
+      return <Queen />;
+    }
+
     return null;
   }
 
@@ -65,3 +68,5 @@ export default class Board extends React.Component<PropsType> {
     );
   }
 }
+
+export default hot(module)(Board);

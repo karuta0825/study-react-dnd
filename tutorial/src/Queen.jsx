@@ -9,7 +9,7 @@ type PropsType = {
   isDragging?: boolean,
 };
 
-const knightSource = {
+const queenSource = {
   beginDrag(props): Object {
     return { name: props.name };
   },
@@ -27,10 +27,10 @@ function collect(connect, monitor): {
   };
 }
 
-@DragSource(ItemTypes.KNIGHT, knightSource, collect)
-export default class Knight extends React.Component<PropsType> {
+@DragSource(ItemTypes.KNIGHT, queenSource, collect)
+export default class Queen extends React.Component<PropsType> {
   static defaultProps = {
-    name: 'knight',
+    name: 'queen',
   };
 
   componentDidMount() {
@@ -51,7 +51,7 @@ export default class Knight extends React.Component<PropsType> {
           cursor: 'move',
         }}
       >
-        ♘
+        ♕
       </div>,
     );
   }
