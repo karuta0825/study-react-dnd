@@ -19,12 +19,13 @@ export function observe(o: (any) => any) {
   emitChange();
 }
 
-export function moveKnight(toX: number, toY: number) {
+
+function moveKnight(toX: number, toY: number) {
   pieces.knightPosition = [toX, toY];
   emitChange();
 }
 
-export function canMoveKnight(toX: number, toY: number): boolean {
+function canMoveKnight(toX: number, toY: number): boolean {
   const [x, y] = pieces.knightPosition;
   const dx = toX - x;
   const dy = toY - y;
@@ -33,12 +34,12 @@ export function canMoveKnight(toX: number, toY: number): boolean {
          || (Math.abs(dx) === 1 && Math.abs(dy) === 2);
 }
 
-export function moveQueen(toX: number, toY: number) {
+function moveQueen(toX: number, toY: number) {
   pieces.queenPosition = [toX, toY];
   emitChange();
 }
 
-export function canMoveQueen(toX: number, toY: number): boolean {
+function canMoveQueen(toX: number, toY: number): boolean {
   const [x, y] = pieces.queenPosition;
   const dx = toX - x;
   const dy = toY - y;
@@ -46,4 +47,24 @@ export function canMoveQueen(toX: number, toY: number): boolean {
   return (Math.abs(dx) > 0 && Math.abs(dy) === 0)
   || (Math.abs(dy) > 0 && Math.abs(dx) === 0)
   || (Math.abs(dx) !== 0 && Math.abs(dy) !== 0 && Math.abs(dx) === Math.abs(dy));
+}
+
+export function pieceMoveController(pieceName: string): Object {
+  switch (pieceName) {
+    case 'knight':
+      return {
+        move: moveKnight,
+        canMove: canMoveKnight,
+      };
+    case 'queen':
+      return {
+        move: moveQueen,
+        canMove: canMoveQueen,
+      };
+    default:
+      return {
+        move: () => {},
+        canMove: () => {},
+      };
+  }
 }
