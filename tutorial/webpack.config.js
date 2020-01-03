@@ -1,38 +1,37 @@
-const webpack = require("webpack");
-const path = require('path');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const config = {
-  mode: 'production',
-  entry: './src/app.js',
+module.exports = {
+  mode: "development",
+  // メインとなるJavaScriptファイル（エントリーポイント）
+  entry: "./src/App.tsx",
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'app.js',
+    path: path.resolve(__dirname, "dist"),
+    filename: "app.js"
   },
   devServer: {
-    contentBase: './dist',
-    port: 3000,
-    inline: true,
+    open: true
   },
-  devtool: 'source-map',
+  devtool: "source-map",
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "src/index.html"
+    })
+  ],
   module: {
-    rules: [{
-      test: /\.jsx?$/,
-      exclude: path.resolve(__dirname, 'node_modules'),
-      loader: 'babel-loader',
-      query: {
-        presets: ['react', 'env'],
-        plugins: ['transform-class-properties', 'transform-decorators-legacy'],
-      },
-    },
-    {
-      test: /\.css$/,
-      exclude: path.resolve(__dirname, 'node_modules'),
-      loader: ['style-loader', 'css-loader?modules&localIdentName=[name]__[local]___[hash:base64:5]'],
-    }],
+    rules: [
+      {
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        loader: "awesome-typescript-loader",
+        options: {
+          configFile: path.resolve(__dirname, "tsconfig.json")
+        }
+      }
+    ]
   },
+  // .jsもないとwebpack-dev-serverが失敗する
   resolve: {
-    extensions: ['.js', '.jsx'],
-  },
+    extensions: [".ts", ".tsx", ".js"]
+  }
 };
-
-module.exports = config;
