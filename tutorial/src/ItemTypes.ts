@@ -1,3 +1,4 @@
 export default {
-  KNIGHT: "knight"
+  KNIGHT: "knight",
+  ITEM: "item"
 };

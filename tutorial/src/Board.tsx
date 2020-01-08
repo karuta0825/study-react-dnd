@@ -3,7 +3,10 @@ import { BoardSquare } from "./BoardSquare";
 import { Knight } from "./Knight";
 
 export interface BoardProps {
-  knightPosition: [number, number];
+  items: {
+    id: string;
+    position: number[];
+  }[];
 }
 
 /** Styling properties applied to the board element */
@@ -20,9 +23,7 @@ const squareStyle: React.CSSProperties = { width: "12.5%", height: "12.5%" };
  * The chessboard component
  * @param props The react props
  */
-const Board: React.FC<BoardProps> = ({
-  knightPosition: [knightX, knightY]
-}) => {
+const Board: React.FC<BoardProps> = ({ items = [] }) => {
   function renderSquare(i: number) {
     const x = i % 8;
     const y = Math.floor(i / 8);
@@ -30,14 +31,18 @@ const Board: React.FC<BoardProps> = ({
     return (
       <div key={i} style={squareStyle}>
         <BoardSquare x={x} y={y}>
-          {renderPiece(x, y)}
+          {renderPiece(items, x, y)}
         </BoardSquare>
       </div>
     );
   }
-  function renderPiece(x: number, y: number) {
-    const isKnightHere = x === knightX && y === knightY;
-    return isKnightHere ? <Knight /> : null;
+
+  function renderPiece(items: any, x: number, y: number) {
+    const item = items.find((item: any) => {
+      const [itemX, itemY] = item.position;
+      return x === itemX && y === itemY;
+    });
+    return item ? <Knight name={item.id} position={[x, y]} /> : null;
   }
 
   const squares = [];

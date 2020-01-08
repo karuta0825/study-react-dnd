@@ -4,6 +4,7 @@ import { Square } from "./Square";
 import { canMoveKnight, moveKnight } from "./Game";
 import ItemTypes from "./ItemTypes";
 import Overlay from "./Overlay";
+import { ItemProps } from "./Knight";
 
 export interface BoardSquareProps {
   x: number;
@@ -19,7 +20,11 @@ export const BoardSquare: React.FC<BoardSquareProps> = ({
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ItemTypes.KNIGHT,
     canDrop: () => canMoveKnight(x, y),
-    drop: () => moveKnight(x, y),
+    drop: (props: ItemProps) => {
+      console.log(props.fromPosition);
+      console.log([x, y]);
+      return moveKnight(props.id, x, y);
+    },
     collect: monitor => ({
       isOver: !!monitor.isOver(),
       canDrop: !!monitor.canDrop()
@@ -37,8 +42,8 @@ export const BoardSquare: React.FC<BoardSquareProps> = ({
       }}
     >
       <Square black={black}>{children}</Square>
-      {isOver && !canDrop && <Overlay color="red" />}
-      {!isOver && canDrop && <Overlay color="yellow" />}
+      {/* {isOver && !canDrop && <Overlay color="red" />}
+      {!isOver && canDrop && <Overlay color="yellow" />}*/}
       {isOver && canDrop && <Overlay color="green" />}
     </div>
   );

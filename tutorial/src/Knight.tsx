@@ -3,15 +3,24 @@ import { DragPreviewImage, useDrag } from "react-dnd";
 import ItemTypes from "./ItemTypes";
 import knightImage from "./knightimage";
 
+export interface ItemProps {
+  type: string;
+  id: string;
+  fromPosition: number[];
+}
+
 const knightStyle: React.CSSProperties = {
   fontSize: 40,
   fontWeight: "bold",
   cursor: "move"
 };
 
-export const Knight: React.FC = () => {
+export const Knight: React.FC<{ name: string; position: number[] }> = ({
+  name,
+  position
+}) => {
   const [{ isDragging }, drag, preview] = useDrag({
-    item: { type: ItemTypes.KNIGHT },
+    item: { type: ItemTypes.KNIGHT, id: name, fromPosition: position },
     collect: monitor => ({
       isDragging: !!monitor.isDragging()
     })
@@ -27,7 +36,7 @@ export const Knight: React.FC = () => {
           opacity: isDragging ? 0.5 : 1
         }}
       >
-        ♘
+        {name}
       </div>
     </>
   );

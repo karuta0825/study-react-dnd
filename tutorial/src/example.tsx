@@ -17,14 +17,22 @@ const containerStyle: React.CSSProperties = {
  * The Chessboard Tutorial Application
  */
 const ChessboardTutorialApp: React.FC = () => {
-  const [knightPos, setKnightPos] = useState<[number, number]>([1, 7]);
+  const [knightPos, setKnightPos] = useState<
+    { id: string; position: number[] }[]
+  >([]);
 
   // the observe function will return an unsubscribe callback
-  useEffect(() => observe((newPos: [number, number]) => setKnightPos(newPos)));
+  useEffect(
+    () =>
+      observe((newPos: any) => {
+        setKnightPos([...newPos]);
+      }),
+    knightPos
+  );
   return (
     <div>
       <div style={containerStyle}>
-        <Board knightPosition={knightPos} />
+        <Board items={knightPos} />
       </div>
     </div>
   );
